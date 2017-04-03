@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_expense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="7"
+        android:textSize="25sp"
+        android:elegantTextHeight="true"
+        android:drawableStart="@mipmap/expense_icon"
+        android:drawableLeft="@mipmap/expense_icon"
+        android:gravity="center_vertical"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingStart="10dp"
+        android:textAppearance="@color/colorPrimary"
+        android:clickable="true"
+        android:onClick="onClick"
+        />
+
+    <TextView
+        android:id="@+id/personal_column2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:elegantTextHeight="true"
+        android:paddingRight="20dp"
+        android:gravity="center_vertical|right"
+        android:textAppearance="@color/colorPrimary"
+        android:textSize="25sp" />
+</LinearLayout>

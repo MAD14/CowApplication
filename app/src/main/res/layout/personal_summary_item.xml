@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/personal_column1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:drawableLeft="@mipmap/expense_icon"
+            android:drawableStart="@mipmap/expense_icon"
+            android:elegantTextHeight="true"
+            android:gravity="center_vertical"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
+            android:textAppearance="@color/colorPrimary"
+            android:textSize="25sp"
+            />
+
+        <TextView
+            android:id="@+id/personal_column2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:elegantTextHeight="true"
+            android:gravity="center_vertical"
+            android:textAppearance="@color/colorPrimary"
+            android:textSize="25sp" />
+
+</LinearLayout>
