@@ -4,15 +4,15 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/group_section"
-            android:icon="@mipmap/group_icon"
+            android:icon="@drawable/group_icon_menu"
             android:title="Group Section" />
         <item
             android:id="@+id/personal_section"
-            android:icon="@drawable/person_icon"
+            android:icon="@drawable/person_icon_menu"
             android:title="Personal Section" />
         <item
             android:id="@+id/add_group"
-            android:icon="@drawable/add_icon"
+            android:icon="@drawable/add_icon_menu"
             android:title="Create a group" />
     </group>
 
