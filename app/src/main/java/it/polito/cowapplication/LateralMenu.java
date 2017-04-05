@@ -107,7 +107,7 @@ public class LateralMenu extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.group_section) {
-            Intent intent = new Intent(getApplicationContext(),GroupActivity.class);
+            Intent intent = new Intent(getApplicationContext(),LateralMenu.class);
             startActivity(intent);
         } else if (id == R.id.personal_section) {
             Toast.makeText(getApplicationContext(), "PersonalSectionActivity", Toast.LENGTH_SHORT).show();

@@ -23,9 +23,9 @@ public class GroupActivity extends AppCompatActivity {
 
     // these arrays of strings are used to populate the List "expenses" and "debits" that are then shown in the app
     // they will be then substituted by the data coming from the database
-    private String[] expenses_base = {"Expense1", "Expense2", "Expense3", "Expense4", "Expense5"};
+    //private String[] expenses_base = {"Expense1", "Expense2", "Expense3", "Expense4", "Expense5"};
     private String[] value_expenses_base = {"13.50€", "1.50€", "21.00€", "8.30€", "15.00€"};
-    private String[] names_base = {"Michela", "Annalisa", "Simona", "Greta", "Agnese"};
+    private String[] names_base = {"Michela", "Annalisa", "Simona", "Greta", "Agnese","Stefania","Elena","Martina","Laura","Monica","Letizia"};
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -68,8 +68,9 @@ public class GroupActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                expenses.add(new ExpenseItem(expenses_base[expenses.size()], value_expenses_base[expenses.size()]));
-                debits.add(new DebitsItem(names_base[debits.size()], value_expenses_base[debits.size()]));
+                expenses.add(new ExpenseItem("Expense"+expenses.size(), value_expenses_base[(int)(Math.random()*value_expenses_base.length)]));
+                debits.add(new DebitsItem(names_base[(int)(Math.random()*names_base.length)], value_expenses_base[(int)(Math.random()*value_expenses_base.length)]));
+
                 ((BaseAdapter) list.getAdapter()).notifyDataSetChanged();
             }
         });
