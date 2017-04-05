@@ -6,7 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="it.polito.cowapplication.GroupActivity">
+    tools:context="it.polito.cowapplication.GroupActivity"
+    android:background="@color/background"
+    >
 
 
     <FrameLayout
@@ -38,7 +40,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="?android:attr/windowBackground"
+        android:background="@color/backgroundDark"
         app:menu="@menu/navigation" />
+
+
 
 </LinearLayout>

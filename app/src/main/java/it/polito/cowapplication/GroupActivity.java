@@ -25,7 +25,7 @@ public class GroupActivity extends AppCompatActivity {
     // they will be then substituted by the data coming from the database
     private String[] expenses_base = {"Expense1", "Expense2", "Expense3", "Expense4", "Expense5"};
     private String[] value_expenses_base = {"13.50€", "1.50€", "21.00€", "8.30€", "15.00€"};
-    private String[] names_base = {"Michela", "Matteo", "Simone", "Greta", "Agnese"};
+    private String[] names_base = {"Michela", "Annalisa", "Simona", "Greta", "Agnese"};
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
