@@ -1,5 +1,6 @@
 package it.polito.cowapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -68,10 +69,8 @@ public class GroupActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                expenses.add(new ExpenseItem("Expense"+expenses.size(), value_expenses_base[(int)(Math.random()*value_expenses_base.length)]));
-                debits.add(new DebitsItem(names_base[(int)(Math.random()*names_base.length)], value_expenses_base[(int)(Math.random()*value_expenses_base.length)]));
-
-                ((BaseAdapter) list.getAdapter()).notifyDataSetChanged();
+                Intent intent = new Intent(view.getContext(),ExpenseCreation.class);
+                startActivity(intent);
             }
         });
         fab.show();
