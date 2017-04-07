@@ -19,11 +19,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 public class LateralMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener{
 
-    private String[] groups = {"First Group", "Second Group", "Third Group", "Fourth Group", "Fifth Group"};
+    private String[] groups = {"Anna's Birthday", "Trip to London", "Dinner with Italian guys"};
     private ListView list;
+    private String description = "Lorem ipsum dolor sit amet, consectetur ...";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +56,16 @@ public class LateralMenu extends AppCompatActivity
             public View getView(int position, View convertView, ViewGroup parent) {
                 if (convertView == null)
                     convertView = getLayoutInflater().inflate(R.layout.group_item,parent,false);
-                TextView tv = (TextView) convertView.findViewById(R.id.tv_group);
+                TextView tv = (TextView) convertView.findViewById(R.id.group_name);
                 tv.setText(groups[position]);
+                tv = (TextView) convertView.findViewById(R.id.group_description);
+                tv.setText(description);
+                tv = (TextView)convertView.findViewById(R.id.group_summary1);
+                String tmp = String.valueOf(position*1.00);
+                tv.setText("+"+ tmp + "€");
+                tv = (TextView)convertView.findViewById(R.id.group_summary2);
+                tmp = String.valueOf(position*2.00);
+                tv.setText("-"+ tmp+ "€");
                 return convertView;
             }
         });

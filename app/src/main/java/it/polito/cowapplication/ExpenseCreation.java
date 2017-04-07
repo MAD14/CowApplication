@@ -1,5 +1,6 @@
 package it.polito.cowapplication;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,27 +21,33 @@ public class ExpenseCreation extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expense_creation);
 
-        /*EditText et_name = (EditText)findViewById(R.id.expense_name);
-        EditText et_description = (EditText)findViewById(R.id.expense_description);
-        EditText et_import = (EditText)findViewById(R.id.expense_import);*/
-
-
-
         bt = (Button) findViewById(R.id.expense_button);
         bt.setOnClickListener(this);
 
     }
 
+
     public void onClick(View v){
+        EditText et_author = (EditText) findViewById(R.id.expense_author);
         EditText et_name = (EditText)findViewById(R.id.expense_name);
         EditText et_description = (EditText)findViewById(R.id.expense_description);
         EditText et_import = (EditText)findViewById(R.id.expense_import);
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        Intent intent = new Intent();
+        intent.putExtra("author",et_author.getText().toString());
+        intent.putExtra("name",et_name.getText().toString());
+        intent.putExtra("import",et_import.getText().toString());
+        intent.putExtra("description",et_description.getText().toString());
+        setResult(RESULT_OK, intent);
+        finish();
+
+        //FirebaseDatabase database = FirebaseDatabase.getInstance();
         //DatabaseReference myRef = database.getReference("Chiara");
         //myRef.push();
-        ListView list = (ListView) findViewById(R.id.lv_expenses);
-        ((BaseAdapter) list.getAdapter()).notifyDataSetChanged();
 
+    }
+
+    public void onClickImage(View v){
+        //TODO: inserire l'immagine della spesa
     }
 }

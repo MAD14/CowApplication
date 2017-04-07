@@ -8,10 +8,13 @@ public class ExpenseItem {
 
     private String name;
     private String value; //double
+    private String description;
+    private String author;
 
-    public ExpenseItem(String name, String value) {
+    public ExpenseItem(String name, String value, String description) {
         this.name = name;
         this.value = value;
+        this.description = description;
     }
 
     public String getName() {
@@ -22,13 +25,21 @@ public class ExpenseItem {
         this.name = name;
     }
 
-    public String getValue() {
-        return value;
-    }
+    public String getValue() {return value;}
 
     public void setValue(String value) {
         this.value = value;
     }
 
+    public String getDescription() { return description;}
 
+    public void setDescription(String description) { this.description = description;}
+
+    public String getAuthor() {
+        return this.author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
 }
