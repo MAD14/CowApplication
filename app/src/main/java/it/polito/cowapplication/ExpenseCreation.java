@@ -33,6 +33,19 @@ public class ExpenseCreation extends AppCompatActivity implements View.OnClickLi
         EditText et_description = (EditText)findViewById(R.id.expense_description);
         EditText et_import = (EditText)findViewById(R.id.expense_import);
 
+        String groupName= getIntent().getStringExtra("groupname");
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("groups/"+groupName+"/items");
+
+        DatabaseReference ref=myRef.child(et_name.getText().toString());
+        ref.child("Price").setValue(et_import.getText().toString());
+        ref.child("Description").setValue(et_description.getText().toString());
+        ref.child("Name").setValue(et_name.getText().toString());
+        ref.child("Author").setValue(et_author.getText().toString());
+
+        ListView list = (ListView) findViewById(R.id.lv_expenses);
+        ((BaseAdapter) list.getAdapter()).notifyDataSetChanged();
+
         Intent intent = new Intent();
         intent.putExtra("author",et_author.getText().toString());
         intent.putExtra("name",et_name.getText().toString());
@@ -41,9 +54,7 @@ public class ExpenseCreation extends AppCompatActivity implements View.OnClickLi
         setResult(RESULT_OK, intent);
         finish();
 
-        //FirebaseDatabase database = FirebaseDatabase.getInstance();
-        //DatabaseReference myRef = database.getReference("Chiara");
-        //myRef.push();
+
 
     }
 

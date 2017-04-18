@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,14 +20,25 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LateralMenu extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,View.OnClickListener{
 
-    private String[] groups = {"Anna's Birthday", "Trip to London", "Dinner with Italian guys"};
+    //private String[] groups = {"Anna's Birthday", "Trip to London", "Dinner with Italian guys"};
     private ListView list;
-    private String description = "Lorem ipsum dolor sit amet, consectetur ...";
+    private List<String> groups;
+    private int index=0;
+    private List<String> descriptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,41 +56,80 @@ public class LateralMenu extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        list = (ListView) findViewById(R.id.lv_groups);
-        list.setAdapter(new BaseAdapter() {
+        groups = new ArrayList<>();
+        descriptions= new ArrayList<>();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("users/Chiara/groups");
+
+        // Read from the database
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public int getCount() {return groups.length;}
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    if (!groups.contains(data.getKey())) {
+                        groups.add(index, data.getKey());
+                        descriptions.add(index,data.child("Description").getValue().toString());
+                        index++;
+                    }
+                }
+
+                list = (ListView) findViewById(R.id.lv_groups);
+                list.setAdapter(new BaseAdapter() {
+                    @Override
+                    public int getCount() {
+                        return groups.size();
+                    }
+
+                    @Override
+                    public Object getItem(int position) {
+                        return groups.get(position);
+                    }
+
+                    @Override
+                    public long getItemId(int position) {
+                        return 0;
+                    }
+
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup parent) {
+                        if (convertView == null)
+                            convertView = getLayoutInflater().inflate(R.layout.group_item, parent, false);
+                        TextView tv = (TextView) convertView.findViewById(R.id.group_name);
+                        tv.setText(groups.get(position));
+                        tv = (TextView) convertView.findViewById(R.id.group_description);
+                        tv.setText(descriptions.get(position));
+                        tv = (TextView) convertView.findViewById(R.id.group_summary1);
+                        // TODO da valutare il significato
+                        String tmp = String.valueOf(position * 1.00);
+                        tv.setText("+" + tmp + "€");
+                        tv = (TextView) convertView.findViewById(R.id.group_summary2);
+                        tmp = String.valueOf(position * 2.00);
+                        tv.setText("-" + tmp + "€");
+                        return convertView;
+                    }
+                });
+            }
+
             @Override
-            public Object getItem(int position) {return groups[position];}
-            @Override
-            public long getItemId(int position) {return 0;}
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                if (convertView == null)
-                    convertView = getLayoutInflater().inflate(R.layout.group_item,parent,false);
-                TextView tv = (TextView) convertView.findViewById(R.id.group_name);
-                tv.setText(groups[position]);
-                tv = (TextView) convertView.findViewById(R.id.group_description);
-                tv.setText(description);
-                tv = (TextView)convertView.findViewById(R.id.group_summary1);
-                String tmp = String.valueOf(position*1.00);
-                tv.setText("+"+ tmp + "€");
-                tv = (TextView)convertView.findViewById(R.id.group_summary2);
-                tmp = String.valueOf(position*2.00);
-                tv.setText("-"+ tmp+ "€");
-                return convertView;
+
+            public void onCancelled(DatabaseError error) {
+                Log.w("Failed to read value.", error.toException());
+
+
             }
         });
-
-
     }
 
     @Override
     public void onClick(View view){
         Intent intent = new Intent(view.getContext(),GroupActivity.class);
+        TextView tv =(TextView) view.findViewById(R.id.group_name);
         intent.putExtra("activity","R.id.navigation_home");
+        intent.putExtra("groupname",tv.getText().toString());
         startActivity(intent);
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -11,10 +11,12 @@ public class ExpenseItem {
     private String description;
     private String author;
 
-    public ExpenseItem(String name, String value, String description) {
+    public ExpenseItem(String name, String value, String description,String author) {
         this.name = name;
         this.value = value;
         this.description = description;
+        this.author=author;
+
     }
 
     public String getName() {

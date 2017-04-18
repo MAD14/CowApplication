@@ -6,12 +6,19 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
@@ -22,6 +29,9 @@ public class GroupActivity extends AppCompatActivity {
     private ListView list;
     private List<ExpenseItem> expenses;
     private List<DebitsItem> debits;
+
+    private int indexExp=0;
+    private String groupname;
 
 
     // these arrays of strings are used to populate the List "expenses" and "debits" that are then shown in the app
@@ -57,33 +67,52 @@ public class GroupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
 
+        Intent myIntent = getIntent();
+        groupname = myIntent.getStringExtra("groupname");
+
         expenses = new ArrayList<>();
         debits = new ArrayList<>();
 
-        for (int i=0;i<3;i++){
-            ExpenseItem expense_tmp = new ExpenseItem(expenses_base[i],value_expenses_base[i],description);
-            expense_tmp.setAuthor(names_base[i]);
-            expenses.add(expense_tmp);
+        for (int i=0;i<3;i++){;
             DebitsItem debit_tmp = new DebitsItem(names_base[i],value_expenses_base[i]);
             debits.add(debit_tmp);
         }
 
-        list = (ListView) findViewById(R.id.lv_expenses);
-        BaseAdapter bae = getAdapterExpenses();
-        list.setAdapter(bae);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("groups/" + groupname + "/items");
 
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(),ExpenseCreation.class);
-                startActivityForResult(intent,1);
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    expenses.add(indexExp, new ExpenseItem(data.child("Name").getValue().toString(), data.child("Price").getValue().toString(), data.child("Description").getValue().toString(),data.child("Author").getValue().toString()));
+                    indexExp++;
+                }
+
+                list = (ListView) findViewById(R.id.lv_expenses);
+                BaseAdapter bae = getAdapterExpenses();
+                list.setAdapter(bae);
+
+                BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+                navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+                FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intent = new Intent(view.getContext(), ExpenseCreation.class);
+                        intent.putExtra("groupname",groupname);
+                        startActivityForResult(intent, 1);
+                    }
+                });
+                fab.show();
+            }
+
+            public void onCancelled(DatabaseError error) {
+                Log.w("Failed to read value.", error.toException());
+
             }
         });
-        fab.show();
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -94,13 +123,14 @@ public class GroupActivity extends AppCompatActivity {
                 String str_import = data.getStringExtra("import")+"€";
                 String str_description = data.getStringExtra("description");
                 String str_author = data.getStringExtra("author");
-                ExpenseItem expense_tmp = new ExpenseItem(str_name,str_import,str_description);
+                ExpenseItem expense_tmp = new ExpenseItem(str_name,str_import,str_description,str_author);
                 expense_tmp.setAuthor(str_author);
                 expenses.add(expense_tmp);
 
             }
         }
     }
+
 
     protected BaseAdapter getAdapterExpenses() {
         BaseAdapter bae = new BaseAdapter() {
